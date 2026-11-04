@@ -30,22 +30,34 @@ struct HUDView: View {
             if hudType == .brightness {
                 brightnessIcon
                     .offset(x: 15, y: 15)
-            } else if let icon = NSImage(contentsOfFile: "/System/Library/CoreServices/OSDUIHelper.app/Contents/Resources/\(iconName).pdf") {
-                Image(nsImage: icon)
-                    .resizable()
-                    .renderingMode(.template)
-                    .foregroundStyle(iconColor)
-                    .frame(width: 170, height: 170)
-                    .mask(alignment: .leading) {
-                        Rectangle().frame(width: isMuted || value <= 0.001 ? 170 : [0, 100, 117, 170][iconStage])
+            } else if let icon = NSImage(contentsOfFile: "/System/Library/CoreServices/OSDUIHelper.app/Contents/Resources/Volume.pdf") {
+                ZStack(alignment: .topLeading) {
+                    Image(nsImage: icon)
+                        .resizable()
+                        .renderingMode(.template)
+                        .foregroundStyle(iconColor)
+                        .frame(width: 170, height: 170)
+                        .mask(alignment: .leading) {
+                            Rectangle().frame(width: silent ? 73 : [0, 100, 117, 170][iconStage])
+                        }
+                    if silent {
+                        Canvas { context, _ in
+                            var slash = Path()
+                            slash.move(to: CGPoint(x: 29, y: 50))
+                            slash.addLine(to: CGPoint(x: 91, y: 90))
+                            context.stroke(slash, with: .color(iconColor), style: StrokeStyle(lineWidth: 5, lineCap: .round))
+                        }
+                        .frame(width: 170, height: 170)
                     }
-                    .offset(x: 15, y: 15)
+                }
+                .frame(width: 170, height: 170)
+                .offset(x: 15 + volumeCenterOffset, y: 15)
             } else {
-                Image(systemName: iconName == "Mute" ? "speaker.slash.fill" : "speaker.wave.\(iconStage).fill")
+                Image(systemName: silent ? "speaker.slash.fill" : "speaker.wave.\(iconStage).fill")
                     .font(.system(size: 80))
                     .foregroundStyle(iconColor)
                     .frame(width: 170, height: 170)
-                    .offset(x: 15, y: 15)
+                    .offset(x: 15 + volumeCenterOffset, y: 15)
             }
             HStack(spacing: 1) {
                 ForEach(0 ..< 16, id: \.self) { index in
@@ -65,11 +77,12 @@ struct HUDView: View {
         .shadow(color: .black.opacity(0.12), radius: 8, y: 3)
     }
 
-    private var iconName: String {
-        switch hudType {
-        case .volume: isMuted || value <= 0.001 ? "Mute" : "Volume"
-        case .brightness: "Brightness"
-        }
+    private var silent: Bool { isMuted || value <= 0.001 }
+
+    // The system PDF has a fixed 170-point canvas. Center the visible speaker + waves,
+    // whose bounds shrink from x=35...135 to x=35...97 as waves disappear.
+    private var volumeCenterOffset: CGFloat {
+        silent ? 25 : [0, 19, 9.5, 0][iconStage]
     }
 
     private var iconStage: Int {
@@ -84,7 +97,7 @@ struct HUDView: View {
             let ring = Path(ellipseIn: CGRect(x: 63.5, y: 50.5, width: 42, height: 42))
             context.stroke(ring, with: .color(iconColor), lineWidth: 6)
 
-            let rayEnd: CGFloat = [0, 42, 49, 53][iconStage]
+            let rayEnd: CGFloat = [0, 39, 49, 53][iconStage]
             for index in 0 ..< 8 {
                 let angle = Double(index) * .pi / 4
                 let direction = CGPoint(x: cos(angle), y: sin(angle))
