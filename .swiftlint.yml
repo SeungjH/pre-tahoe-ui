@@ -1,0 +1,20 @@
+disabled_rules:
+  - line_length
+  - identifier_name
+  - file_length
+  - type_body_length
+  - function_body_length
+  - cyclomatic_complexity
+  #
+  # conflicts with swiftformat
+  - opening_brace
+  - closing_brace
+  - leading_whitespace
+  - trailing_whitespace
+  - trailing_comma
+
+included:
+  - volumeHUD
+
+strict: true
+check_for_updates: true
