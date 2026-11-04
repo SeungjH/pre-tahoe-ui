@@ -27,15 +27,21 @@ struct HUDView: View {
 
     var body: some View {
         ZStack(alignment: .topLeading) {
-            if let icon = NSImage(contentsOfFile: "/System/Library/CoreServices/OSDUIHelper.app/Contents/Resources/\(iconName).pdf") {
+            if hudType == .brightness {
+                brightnessIcon
+                    .offset(x: 15, y: 15)
+            } else if let icon = NSImage(contentsOfFile: "/System/Library/CoreServices/OSDUIHelper.app/Contents/Resources/\(iconName).pdf") {
                 Image(nsImage: icon)
                     .resizable()
                     .renderingMode(.template)
                     .foregroundStyle(iconColor)
                     .frame(width: 170, height: 170)
+                    .mask(alignment: .leading) {
+                        Rectangle().frame(width: isMuted || value <= 0.001 ? 170 : [0, 100, 117, 170][iconStage])
+                    }
                     .offset(x: 15, y: 15)
             } else {
-                Image(systemName: hudType == .brightness ? "sun.max" : (iconName == "Mute" ? "speaker.slash.fill" : "speaker.wave.3.fill"))
+                Image(systemName: iconName == "Mute" ? "speaker.slash.fill" : "speaker.wave.\(iconStage).fill")
                     .font(.system(size: 80))
                     .foregroundStyle(iconColor)
                     .frame(width: 170, height: 170)
@@ -64,6 +70,31 @@ struct HUDView: View {
         case .volume: isMuted || value <= 0.001 ? "Mute" : "Volume"
         case .brightness: "Brightness"
         }
+    }
+
+    private var iconStage: Int {
+        if value <= 1.0 / 3.0 { return 1 }
+        if value <= 2.0 / 3.0 { return 2 }
+        return 3
+    }
+
+    private var brightnessIcon: some View {
+        Canvas { context, _ in
+            let center = CGPoint(x: 84.5, y: 71.5)
+            let ring = Path(ellipseIn: CGRect(x: 63.5, y: 50.5, width: 42, height: 42))
+            context.stroke(ring, with: .color(iconColor), lineWidth: 6)
+
+            let rayEnd: CGFloat = [0, 42, 49, 53][iconStage]
+            for index in 0 ..< 8 {
+                let angle = Double(index) * .pi / 4
+                let direction = CGPoint(x: cos(angle), y: sin(angle))
+                var ray = Path()
+                ray.move(to: CGPoint(x: center.x + direction.x * 36, y: center.y + direction.y * 36))
+                ray.addLine(to: CGPoint(x: center.x + direction.x * rayEnd, y: center.y + direction.y * rayEnd))
+                context.stroke(ray, with: .color(iconColor), style: StrokeStyle(lineWidth: 6, lineCap: .round))
+            }
+        }
+        .frame(width: 170, height: 170)
     }
 
     @ViewBuilder

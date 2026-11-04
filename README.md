@@ -6,7 +6,7 @@ A small macOS utility that restores a centered volume and brightness indicator. 
 
 ## Features
 
-- Classic volume, mute, and brightness artwork with a segmented level bar.
+- Classic volume and brightness indicators: one to three volume waves and three sun-ray lengths follow the level, above a segmented bar.
 - Smooth brightness changes using macOS DisplayServices.
 - A stationary indicator while switching desktops.
 - Separate display duration controls for volume and brightness.
