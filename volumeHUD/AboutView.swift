@@ -61,10 +61,11 @@ struct AboutView: View {
                 #endif
 
                 HStack {
-                    Text("Volume indicator follows mouse")
+                    Text("Volume indicator on pointer's display")
                     Spacer()
-                    Toggle("Volume indicator follows mouse", isOn: $volumeHUDFollowsMouse)
+                    Toggle("Volume indicator on pointer's display", isOn: $volumeHUDFollowsMouse)
                         .labelsHidden()
+                        .help("Off: show on the primary display")
                 }
             }
             .font(.system(size: 13))

@@ -9,6 +9,8 @@ Changes:
 - HUD centered horizontally, 140 points above the bottom of the selected screen.
 - Immediate appearance, 0.7 seconds at full opacity after the last key input, then a 0.22 second ease-out fade.
 - The icon-free settings window has separate display-time sliders for volume and brightness indicators. Reopen the app to adjust them; changes apply on the next key input.
+- A simpler, monochrome speaker app icon replaces the original meter artwork.
+- The volume display option now makes clear that it selects the display containing the pointer.
 - A continuous dark meter track with narrow separators between white segments.
 - Places the HUD in a separate SkyLight application space so it stays fixed during desktop switching; falls back to the standard overlay if the private API is unavailable.
 - Runs as an accessory app without a menu bar icon. Reopen the app to access settings and Quit.
@@ -17,7 +19,8 @@ Changes:
 - Removed the obsolete position toggle and upstream release notification.
 - Separate bundle ID: `local.classicvolumehud`.
 
-Build with Xcode using `volumeHUD.xcodeproj`, or run
+Run `./install.sh` to build, install to `/Applications`, and launch the app.
+Alternatively, build with Xcode using `volumeHUD.xcodeproj`, or run
 `./build-local.sh "build/Pre-Tahoe UI.app"`. The command-line build includes
 the upstream app's compiled MIT-licensed icon and sound assets because Command
 Line Tools do not include `actool`.

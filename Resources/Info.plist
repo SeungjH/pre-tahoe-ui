@@ -12,8 +12,6 @@
 	<string>volumeHUD</string>
 	<key>CFBundleIconFile</key>
 	<string>volumeHUD</string>
-	<key>CFBundleIconName</key>
-	<string>volumeHUD</string>
 	<key>CFBundleIdentifier</key>
 	<string>local.classicvolumehud</string>
 	<key>CFBundleInfoDictionaryVersion</key>

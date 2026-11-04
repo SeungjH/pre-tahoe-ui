@@ -10,18 +10,21 @@ A small macOS utility that restores a centered volume and brightness indicator. 
 - Separate display duration controls for volume and brightness.
 - Background operation without a menu bar icon. Open the app again to show settings or quit.
 
-## Build and run
+## Install
 
-Requires macOS Tahoe or later and a Swift toolchain. On a Mac with Xcode Command Line Tools:
+Requires macOS Tahoe or later and Xcode Command Line Tools (`xcode-select --install`). Copy and paste this into Terminal:
 
 ```sh
-./build-local.sh
-open "build/Pre-Tahoe UI.app"
+git clone https://github.com/SeungjH/pre-tahoe-ui.git && cd pre-tahoe-ui && ./install.sh
 ```
 
-The build script creates a locally signed app. Move it to `/Applications` if you want to keep it there. After launching, enable **Pre-Tahoe UI** in **System Settings → Privacy & Security → Accessibility** so it can handle the volume and brightness keys and suppress the system indicator. Open the app again to adjust settings. The built-in Quit button stops the background process.
+Clone URL: `https://github.com/SeungjH/pre-tahoe-ui.git`
 
-The included `Resources/Assets.car` and `Resources/volumeHUD.icns` are compiled assets from the MIT-licensed upstream project. They let the command-line build work without Xcode's asset catalog compiler. The Xcode project is also included.
+The installer builds the app locally, copies it to `/Applications/Pre-Tahoe UI.app`, and opens it. If an older copy is installed there, it is updated. If macOS prompts for permission, enable **Pre-Tahoe UI** in **System Settings → Privacy & Security → Accessibility** so it can handle the volume and brightness keys and suppress the system indicator. Open the app again to adjust settings. The built-in Quit button stops the background process.
+
+To build without installing, run `./build-local.sh`; the app is placed in `build/Pre-Tahoe UI.app`.
+
+The included `Resources/Assets.car` contains MIT-licensed upstream sound and icon assets, while `Resources/volumeHUD.icns` is this fork's app icon. These let the command-line build work without Xcode's asset catalog compiler. The Xcode project is also included.
 
 ## Compatibility
 
