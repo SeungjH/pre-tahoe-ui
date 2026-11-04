@@ -9,7 +9,7 @@ Changes:
 - HUD centered horizontally, 140 points above the bottom of the selected screen.
 - Immediate appearance, 0.7 seconds at full opacity after the last key input, then a 0.22 second ease-out fade.
 - The icon-free settings window has separate display-time sliders for volume and brightness indicators. Reopen the app to adjust them; changes apply on the next key input.
-- The app icon uses the same three-wave speaker artwork and proportions as the volume indicator, without the meter.
+- The app icon depicts a sequoia forest in cobalt blue and warm orange tones, based on the supplied color reference.
 - The volume display option now makes clear that it selects the display containing the pointer.
 - A continuous dark meter track with narrow separators between white segments.
 - Places the HUD in a separate SkyLight application space so it stays fixed during desktop switching; falls back to the standard overlay if the private API is unavailable.
