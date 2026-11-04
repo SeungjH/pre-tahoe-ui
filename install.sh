@@ -11,6 +11,10 @@ trap 'rm -rf "$build_dir"' EXIT
 
 # Stop only this app before replacing it. Other volumeHUD installations are untouched.
 pkill -f '^/Applications/Pre-Tahoe UI[.]app/Contents/MacOS/volumeHUD$' 2>/dev/null || true
+for attempt in {1..30}; do
+    pgrep -f '^/Applications/Pre-Tahoe UI[.]app/Contents/MacOS/volumeHUD$' >/dev/null || break
+    sleep 0.1
+done
 
 if [[ -w /Applications ]]; then
     ditto "$build_dir/$app_name" "$install_path"
@@ -19,6 +23,9 @@ else
 fi
 
 codesign --verify --deep --strict "$install_path"
-open "$install_path"
+if ! open "$install_path"; then
+    sleep 1
+    open "$install_path"
+fi
 print "Installed and opened $install_path"
 print 'Enable Pre-Tahoe UI in System Settings > Privacy & Security > Accessibility if prompted.'
