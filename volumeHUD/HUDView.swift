@@ -40,8 +40,8 @@ struct HUDView: View {
                     if silent {
                         Canvas { context, _ in
                             var slash = Path()
-                            slash.move(to: CGPoint(x: 29, y: 50))
-                            slash.addLine(to: CGPoint(x: 91, y: 90))
+                            slash.move(to: CGPoint(x: 27, y: 38))
+                            slash.addLine(to: CGPoint(x: 142, y: 111))
                             context.stroke(slash, with: .color(iconColor), style: StrokeStyle(lineWidth: 5, lineCap: .round))
                         }
                         .frame(width: 170, height: 170)
