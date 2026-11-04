@@ -5,7 +5,7 @@ Based on Danny Stewart's volumeHUD 3.3.4 (MIT license).
 Changes:
 
 - Dark blurred 200 × 200 HUD using the system's original Volume, Mute, and Brightness PDF icons.
-- The volume icon shows one, two, or three waves and stays centered as its width changes. At zero or mute, the waves vanish and a slash crosses the speaker. The brightness icon grows its rays across three levels. Content updates without replacing the HUD window.
+- The volume icon keeps all three waves at any nonzero level. At zero or mute, the waves vanish and a slash crosses the speaker. The brightness icon grows its rays across three levels. Content updates without replacing the HUD window.
 - HUD centered horizontally, 140 points above the bottom of the selected screen.
 - Immediate appearance, 0.7 seconds at full opacity after the last key input, then a 0.22 second ease-out fade.
 - The icon-free settings window has separate display-time sliders for volume and brightness indicators. Reopen the app to adjust them; changes apply on the next key input.

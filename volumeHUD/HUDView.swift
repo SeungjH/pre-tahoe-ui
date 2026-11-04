@@ -38,7 +38,7 @@ struct HUDView: View {
                         .foregroundStyle(iconColor)
                         .frame(width: 170, height: 170)
                         .mask(alignment: .leading) {
-                            Rectangle().frame(width: silent ? 73 : [0, 100, 117, 170][iconStage])
+                            Rectangle().frame(width: silent ? 73 : 170)
                         }
                     if silent {
                         Canvas { context, _ in
@@ -51,13 +51,13 @@ struct HUDView: View {
                     }
                 }
                 .frame(width: 170, height: 170)
-                .offset(x: 15 + volumeCenterOffset, y: 15)
+                .offset(x: silent ? 40 : 15, y: 15)
             } else {
-                Image(systemName: silent ? "speaker.slash.fill" : "speaker.wave.\(iconStage).fill")
+                Image(systemName: silent ? "speaker.slash.fill" : "speaker.wave.3.fill")
                     .font(.system(size: 80))
                     .foregroundStyle(iconColor)
                     .frame(width: 170, height: 170)
-                    .offset(x: 15 + volumeCenterOffset, y: 15)
+                    .offset(x: silent ? 40 : 15, y: 15)
             }
             HStack(spacing: 1) {
                 ForEach(0 ..< 16, id: \.self) { index in
@@ -79,13 +79,7 @@ struct HUDView: View {
 
     private var silent: Bool { isMuted || value <= 0.001 }
 
-    // The system PDF has a fixed 170-point canvas. Center the visible speaker + waves,
-    // whose bounds shrink from x=35...135 to x=35...97 as waves disappear.
-    private var volumeCenterOffset: CGFloat {
-        silent ? 25 : [0, 19, 9.5, 0][iconStage]
-    }
-
-    private var iconStage: Int {
+    private var brightnessStage: Int {
         if value <= 1.0 / 3.0 { return 1 }
         if value <= 2.0 / 3.0 { return 2 }
         return 3
@@ -97,7 +91,7 @@ struct HUDView: View {
             let ring = Path(ellipseIn: CGRect(x: 63.5, y: 50.5, width: 42, height: 42))
             context.stroke(ring, with: .color(iconColor), lineWidth: 6)
 
-            let rayEnd: CGFloat = [0, 39, 49, 53][iconStage]
+            let rayEnd: CGFloat = [0, 39, 49, 53][brightnessStage]
             for index in 0 ..< 8 {
                 let angle = Double(index) * .pi / 4
                 let direction = CGPoint(x: cos(angle), y: sin(angle))
