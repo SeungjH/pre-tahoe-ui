@@ -39,15 +39,18 @@ struct HUDView: View {
                         .frame(width: 170, height: 170)
                     if silent {
                         Canvas { context, _ in
-                            var slash = Path()
-                            slash.move(to: CGPoint(x: 27, y: 38))
-                            slash.addLine(to: CGPoint(x: 142, y: 111))
-                            context.stroke(slash, with: .color(iconColor), style: StrokeStyle(lineWidth: 5, lineCap: .round))
+                            context.stroke(muteSlash, with: .color(.black), style: StrokeStyle(lineWidth: 11, lineCap: .round))
+                        }
+                        .frame(width: 170, height: 170)
+                        .blendMode(.destinationOut)
+                        Canvas { context, _ in
+                            context.stroke(muteSlash, with: .color(iconColor), style: StrokeStyle(lineWidth: 5, lineCap: .round))
                         }
                         .frame(width: 170, height: 170)
                     }
                 }
                 .frame(width: 170, height: 170)
+                .compositingGroup()
                 .offset(x: 15, y: 15)
             } else {
                 Image(systemName: "speaker.wave.3.fill")
@@ -75,6 +78,13 @@ struct HUDView: View {
     }
 
     private var silent: Bool { isMuted || value <= 0.001 }
+
+    private var muteSlash: Path {
+        var path = Path()
+        path.move(to: CGPoint(x: 27, y: 38))
+        path.addLine(to: CGPoint(x: 142, y: 111))
+        return path
+    }
 
     private var brightnessStage: Int {
         min(3, max(0, Int(value * 4)))
