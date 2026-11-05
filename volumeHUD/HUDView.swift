@@ -64,9 +64,9 @@ struct HUDView: View {
                     barView(for: index)
                 }
             }
-            .frame(width: 160, height: 8, alignment: .leading)
+            .padding(1)
             .background(.black.opacity(0.86))
-            .offset(x: 20, y: 171)
+            .offset(x: 19.5, y: 171)
         }
         .frame(width: hudSize, height: hudSize, alignment: .topLeading)
         .background {
@@ -112,7 +112,7 @@ struct HUDView: View {
     @ViewBuilder
     private func barView(for index: Int) -> some View {
         let barWidth: CGFloat = 9
-        let barHeight: CGFloat = 6.5
+        let barHeight: CGFloat = 6
 
         if hudType == .volume, isMuted || value <= 0.001 {
             // Show all bars dimmed when muted
@@ -134,7 +134,7 @@ struct HUDView: View {
 
                 // Quantize to 1/4 steps (0.25, 0.5, 0.75)
                 let quarterStep = round(positionInBar * 4.0) / 4.0
-                let fillWidth = barWidth * CGFloat(quarterStep)
+                let fillWidth = (barWidth * CGFloat(quarterStep) * 2).rounded() / 2
 
                 // Show partial fill with overlay
                 ZStack(alignment: .leading) {
