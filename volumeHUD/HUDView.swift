@@ -65,7 +65,7 @@ struct HUDView: View {
                 }
             }
             .padding(1)
-            .background(.black.opacity(0.86))
+            .background(.black.opacity(0.78))
             .offset(x: 19.5, y: 171)
         }
         .frame(width: hudSize, height: hudSize, alignment: .topLeading)
