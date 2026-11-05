@@ -9,6 +9,8 @@ struct AboutView: View {
     @Environment(\.loginItemManager) private var loginItemManager
     @AppStorage("volumeHUDFollowsMouse") private var volumeHUDFollowsMouse = true
     @AppStorage("hudHoldSeconds") private var volumeHoldSeconds = 0.7
+    @AppStorage("barSegmentOpacity") private var barSegmentOpacity = 0.72
+    @AppStorage("barBackgroundOpacity") private var barBackgroundOpacity = 0.86
     #if !SANDBOX
         @AppStorage("brightnessEnabled") private var brightnessEnabled = false
         @AppStorage("brightnessHUDHoldSeconds") private var brightnessHoldSeconds = 0.7
@@ -85,6 +87,14 @@ struct AboutView: View {
                 #endif
             }
 
+            Divider()
+
+            VStack(alignment: .leading, spacing: 12) {
+                sectionTitle("Level bar opacity")
+                OpacitySetting(title: "Small bars", opacity: $barSegmentOpacity)
+                OpacitySetting(title: "Black background", opacity: $barBackgroundOpacity)
+            }
+
             Spacer(minLength: 0)
 
             HStack {
@@ -97,7 +107,7 @@ struct AboutView: View {
             }
         }
         .padding(28)
-        .frame(width: 560, height: 420)
+        .frame(width: 560, height: 550)
     }
 
     private func sectionTitle(_ title: String) -> some View {
@@ -122,6 +132,27 @@ private struct DurationSetting: View {
             ), in: 0.2 ... 2.0)
                 .accessibilityLabel("\(title) indicator display time")
             Text(duration.formatted(.number.precision(.fractionLength(1))) + " s")
+                .monospacedDigit()
+                .frame(width: 42, alignment: .trailing)
+        }
+        .font(.system(size: 12))
+    }
+}
+
+private struct OpacitySetting: View {
+    let title: String
+    @Binding var opacity: Double
+
+    var body: some View {
+        HStack(spacing: 14) {
+            Text(title)
+                .frame(width: 110, alignment: .leading)
+            Slider(value: Binding(
+                get: { opacity },
+                set: { opacity = ($0 * 100).rounded() / 100 },
+            ), in: 0 ... 1)
+                .accessibilityLabel("\(title) opacity")
+            Text("\(Int((opacity * 100).rounded()))%")
                 .monospacedDigit()
                 .frame(width: 42, alignment: .trailing)
         }

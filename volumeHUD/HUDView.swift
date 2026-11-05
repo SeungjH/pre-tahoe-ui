@@ -21,6 +21,8 @@ struct HUDView: View {
     let hudType: HUDType
     let value: Float
     let isMuted: Bool
+    @AppStorage("barSegmentOpacity") private var barSegmentOpacity = 0.72
+    @AppStorage("barBackgroundOpacity") private var barBackgroundOpacity = 0.86
 
     private let hudSize: CGFloat = 200
     private let iconColor = Color.white.opacity(0.72)
@@ -65,7 +67,7 @@ struct HUDView: View {
                 }
             }
             .padding(1)
-            .background(.black.opacity(0.78))
+            .background(.black.opacity(barBackgroundOpacity))
             .offset(x: 19.5, y: 171)
         }
         .frame(width: hudSize, height: hudSize, alignment: .topLeading)
@@ -126,7 +128,7 @@ struct HUDView: View {
             if value >= barEnd {
                 // Fully filled bar
                 Rectangle()
-                    .fill(.white.opacity(0.72))
+                    .fill(.white.opacity(barSegmentOpacity))
                     .frame(width: barWidth, height: barHeight)
             } else if value > barStart {
                 // Partially filled bar - calculate fill percentage
@@ -139,7 +141,7 @@ struct HUDView: View {
                 // Show partial fill with overlay
                 ZStack(alignment: .leading) {
                     Rectangle()
-                        .fill(.white.opacity(0.72))
+                        .fill(.white.opacity(barSegmentOpacity))
                         .frame(width: fillWidth, height: barHeight)
                 }
                 .frame(width: barWidth, height: barHeight)

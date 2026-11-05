@@ -9,7 +9,7 @@ A small macOS utility that restores a centered volume and brightness indicator. 
 - Classic volume and brightness indicators: three volume waves at every level with a slash at zero, and four evenly spaced sun-ray lengths for brightness, above a segmented bar.
 - Smooth brightness changes using macOS DisplayServices.
 - A stationary indicator while switching desktops.
-- Separate display duration controls for volume and brightness.
+- Separate display duration controls for volume and brightness, plus opacity controls for the small white bars and their black background.
 - Background operation without a menu bar icon. Open the app again to show settings or quit.
 
 ## Install
