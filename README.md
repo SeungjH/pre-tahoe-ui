@@ -14,16 +14,12 @@ A small macOS utility that restores a centered volume and brightness indicator. 
 
 ## Install
 
-Requires macOS Tahoe or later and Xcode Command Line Tools (`xcode-select --install`). Copy and paste this into Terminal:
+Requires macOS Tahoe or later. If needed, install Xcode Command Line Tools with `xcode-select --install`. Then run:
 
 ```sh
 git clone https://github.com/SeungjH/pre-tahoe-ui.git && cd pre-tahoe-ui && ./install.sh
 ```
-
-
-The installer builds the app locally, copies it to `/Applications/Pre-Tahoe UI.app`, and opens it. If an older copy is installed there, it is updated. In **System Settings → Privacy & Security → Device Control and Data Access**, add and enable `/Applications/Pre-Tahoe UI.app` so it can handle the volume and brightness keys and suppress the system indicator. If an older Pre-Tahoe UI entry is already enabled but macOS still shows its own indicator, remove that entry and add the installed app again. The app begins intercepting keys as soon as the new permission takes effect. Open the app again to adjust settings. The built-in Quit button stops the background process.
-
-To build without installing, run `./build-local.sh`; the app is placed in `build/Pre-Tahoe UI.app`.
+The script installs and opens **Pre-Tahoe UI** in Applications. In **System Settings → Privacy & Security → Device Control and Data Access**, add and enable `/Applications/Pre-Tahoe UI.app`. Open the app again for settings or to quit.
 
 ## Uninstall
 
