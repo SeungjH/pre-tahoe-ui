@@ -20,7 +20,6 @@ Requires macOS Tahoe or later and Xcode Command Line Tools (`xcode-select --inst
 git clone https://github.com/SeungjH/pre-tahoe-ui.git && cd pre-tahoe-ui && ./install.sh
 ```
 
-Clone URL: `https://github.com/SeungjH/pre-tahoe-ui.git`
 
 The installer builds the app locally, copies it to `/Applications/Pre-Tahoe UI.app`, and opens it. If an older copy is installed there, it is updated. If macOS prompts for permission, enable **Pre-Tahoe UI** in **System Settings → Privacy & Security → Device Control and Data Access** so it can handle the volume and brightness keys and suppress the system indicator. Open the app again to adjust settings. The built-in Quit button stops the background process.
 
