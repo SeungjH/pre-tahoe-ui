@@ -52,5 +52,7 @@
 	<true/>
 	<key>NSHumanReadableCopyright</key>
 	<string>© 2026 Brian Han. Based on volumeHUD © 2025 Danny Stewart.</string>
+	<key>PreTahoeUIUninstallSupported</key>
+	<true/>
 </dict>
 </plist>

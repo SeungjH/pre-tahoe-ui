@@ -8,6 +8,7 @@
 import AppKit
 import Darwin
 import Foundation
+import ServiceManagement
 import SwiftUI
 @preconcurrency import UserNotifications
 
@@ -65,6 +66,20 @@ class AppDelegate: NSObject, NSApplicationDelegate, @preconcurrency UNUserNotifi
     // MARK: - On Finish Launching
 
     func applicationDidFinishLaunching(_: Notification) {
+        if ProcessInfo.processInfo.arguments.contains("--unregister-login-item") {
+            let service = SMAppService.mainApp
+            if service.status == .enabled || service.status == .requiresApproval {
+                do {
+                    try service.unregister()
+                } catch {
+                    FileHandle.standardError.write(Data("Could not remove login item: \(error)\n".utf8))
+                    exit(EXIT_FAILURE)
+                }
+            }
+            NSApp.terminate(nil)
+            return
+        }
+
         // Skip full initialization if running in SwiftUI preview or test mode
         let isDevEnvironment = isRunningInDevEnvironment()
         if isDevEnvironment { return }

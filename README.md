@@ -25,6 +25,16 @@ The installer builds the app locally, copies it to `/Applications/Pre-Tahoe UI.a
 
 To build without installing, run `./build-local.sh`; the app is placed in `build/Pre-Tahoe UI.app`.
 
+## Uninstall
+
+From the cloned repository, run:
+
+```sh
+./uninstall.sh
+```
+
+The script stops Pre-Tahoe UI, unregisters its login item, and removes `/Applications/Pre-Tahoe UI.app`. It checks the app's bundle identifier before removing anything. If your installed copy is older than this script, run `./install.sh` once to update it, then rerun `./uninstall.sh`. Your settings remain available if you reinstall. To remove the old permission entry as well, go to **System Settings → Privacy & Security → Device Control and Data Access**.
+
 The included `Resources/Assets.car` contains MIT-licensed upstream sound and icon assets, while `Resources/volumeHUD.icns` is this fork's app icon. These let the command-line build work without Xcode's asset catalog compiler. The Xcode project is also included.
 
 ## If both indicators appear
