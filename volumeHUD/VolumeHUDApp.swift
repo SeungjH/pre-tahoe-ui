@@ -314,8 +314,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, @preconcurrency UNUserNotifi
     // MARK: - Show About Window
 
     private func showAboutWindow() {
-        // If window already exists and is visible, just bring it to the front
-        if let window = aboutWindow, window.isVisible {
+        // Reopen a minimized settings window instead of creating another panel.
+        if let window = aboutWindow, window.isVisible || window.isMiniaturized {
+            if window.isMiniaturized { window.deminiaturize(nil) }
             window.makeKeyAndOrderFront(nil)
             return
         }
@@ -336,13 +337,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, @preconcurrency UNUserNotifi
         // Use NSPanel to remain in accessory mode
         let panel = NSPanel(
             contentRect: NSRect(x: 0, y: 0, width: 560, height: 420),
-            styleMask: [.titled, .closable],
+            styleMask: [.titled, .closable, .miniaturizable],
             backing: .buffered,
             defer: false,
         )
 
         panel.contentViewController = hostingController
         panel.title = "Pre-Tahoe UI"
+        panel.standardWindowButton(.zoomButton)?.isHidden = true
 
         // Prevent the panel from closing when clicking away
         panel.hidesOnDeactivate = false
