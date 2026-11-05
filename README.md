@@ -4,9 +4,19 @@
 
 A small macOS utility that restores a centered volume and brightness indicator. It replaces the macOS Tahoe indicators when Accessibility access is granted.
 
-## Demo
+## Screenshots
 
-[Watch the 8-second volume and brightness demo](https://raw.githubusercontent.com/SeungjH/pre-tahoe-ui/main/media/demo.mp4).
+**Volume**
+
+<img src="media/volume.jpg" alt="Centered volume indicator" width="900">
+
+**Brightness**
+
+<img src="media/brightness.jpg" alt="Centered brightness indicator" width="900">
+
+**Muted**
+
+<img src="media/muted.jpg" alt="Centered muted volume indicator" width="900">
 
 ## Features
 
