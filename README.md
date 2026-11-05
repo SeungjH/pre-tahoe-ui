@@ -4,6 +4,10 @@
 
 A small macOS utility that restores a centered volume and brightness indicator. It replaces the macOS Tahoe indicators when Accessibility access is granted.
 
+## Demo
+
+[Watch the 8-second volume and brightness demo](https://raw.githubusercontent.com/SeungjH/pre-tahoe-ui/main/media/demo.mp4).
+
 ## Features
 
 - Classic volume and brightness indicators: three volume waves at every level with a slash at zero, and four evenly spaced sun-ray lengths for brightness, above a segmented bar.
