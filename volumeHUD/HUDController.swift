@@ -28,6 +28,7 @@ class HUDController: ObservableObject {
     private var lastShownHUDType: HUDType?
     private var isObservingDisplayChanges = false
     private let isPreviewMode: Bool
+    var isInterceptionActive = false
 
     init(isPreviewMode: Bool = false) {
         self.isPreviewMode = isPreviewMode
@@ -251,6 +252,7 @@ class HUDController: ObservableObject {
 
     @MainActor
     private func displayHUD(hudType: HUDType, value: Float, isMuted: Bool, resetsTimer: Bool) {
+        guard isPreviewMode || isInterceptionActive else { return }
         let shouldResetTimer = resetsTimer || !isShowing
         if !shouldResetTimer, hideTimer == nil { return }
         if shouldResetTimer {

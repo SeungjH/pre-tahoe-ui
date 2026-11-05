@@ -28,4 +28,5 @@ if ! open "$install_path"; then
     open "$install_path"
 fi
 print "Installed and opened $install_path"
-print 'Enable Pre-Tahoe UI in System Settings > Privacy & Security > Accessibility if prompted.'
+print 'If macOS still shows its own indicator, open System Settings > Privacy & Security > Device Control and Data Access.'
+print 'Remove any older Pre-Tahoe UI entry, then add /Applications/Pre-Tahoe UI.app and enable it.'

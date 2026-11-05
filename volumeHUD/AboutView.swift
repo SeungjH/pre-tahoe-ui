@@ -12,7 +12,7 @@ struct AboutView: View {
     @AppStorage("barSegmentOpacity") private var barSegmentOpacity = 0.72
     @AppStorage("barBackgroundOpacity") private var barBackgroundOpacity = 0.86
     #if !SANDBOX
-        @AppStorage("brightnessEnabled") private var brightnessEnabled = false
+        @AppStorage("brightnessEnabled") private var brightnessEnabled = true
         @AppStorage("brightnessHUDHoldSeconds") private var brightnessHoldSeconds = 0.7
     #endif
 

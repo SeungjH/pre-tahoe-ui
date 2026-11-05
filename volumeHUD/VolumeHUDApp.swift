@@ -33,6 +33,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, @preconcurrency UNUserNotifi
     var hudController: HUDController!
     var aboutWindow: NSPanel?
     var loginItemManager: LoginItemManager!
+    #if !SANDBOX
+        private var accessibilityRetryTimer: Timer?
+    #endif
 
     let logger: Logger = .init()
 
@@ -96,6 +99,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, @preconcurrency UNUserNotifi
 
         // Keep the app headless and out of the Dock
         NSApplication.shared.setActivationPolicy(.accessory)
+        UserDefaults.standard.register(defaults: ["brightnessEnabled": true])
 
         // Set up the notifications delegate BEFORE scheduling any notifications
         UNUserNotificationCenter.current().delegate = self
@@ -190,7 +194,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, @preconcurrency UNUserNotifi
                 volumeMonitor.mediaKeyInterceptor = mediaKeyInterceptor
             }
 
-            if mediaKeyInterceptor?.start() == true {
+            let started = mediaKeyInterceptor?.start() == true
+            hudController.isInterceptionActive = started
+            if started {
                 logger.info("Media key interceptor started.")
             } else {
                 logger.warning("Failed to start media key interceptor. Accessibility permissions may be required.")
@@ -388,7 +394,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, @preconcurrency UNUserNotifi
 
         // MARK: - Accessibility Permissions
 
-        private nonisolated func requestAccessibilityPermissionsIfNeeded() {
+        @MainActor
+        private func requestAccessibilityPermissionsIfNeeded() {
             // Check current permission status
             let isCurrentlyTrusted = AXIsProcessTrusted()
 
@@ -405,18 +412,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, @preconcurrency UNUserNotifi
             let options = [promptKey: true] as [String: Bool] as CFDictionary
             _ = AXIsProcessTrustedWithOptions(options)
 
-            // Update accessibility status after the request
-            Task { @MainActor [weak self] in
-                guard let self else { return }
-                try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 second delay
-                let newStatus = AXIsProcessTrusted()
-                updateAccessibilityStatus()
-
-                if newStatus {
-                    logger.info("Accessibility permissions granted! Key press monitoring will be more reliable.")
-                } else {
-                    logger.info("Accessibility permissions not yet enabled. Key press monitoring will be limited.")
-                    logger.info("To enable: System Settings → Privacy & Security → Accessibility")
+            accessibilityRetryTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
+                guard AXIsProcessTrusted() else { return }
+                timer.invalidate()
+                Task { @MainActor [weak self] in
+                    guard let self else { return }
+                    self.accessibilityRetryTimer = nil
+                    self.updateAccessibilityStatus()
+                    self.startMediaKeyInterceptor()
+                    self.logger.info("Accessibility permissions granted; media keys are now intercepted.")
                 }
             }
         }
