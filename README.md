@@ -6,17 +6,9 @@ A small macOS utility that restores a centered volume and brightness indicator. 
 
 ## Screenshots
 
-**Volume**
-
-<img src="media/volume.jpg" alt="Centered volume indicator" width="900">
-
-**Brightness**
-
-<img src="media/brightness.jpg" alt="Centered brightness indicator" width="900">
-
-**Muted**
-
-<img src="media/muted.jpg" alt="Centered muted volume indicator" width="900">
+| Volume | Brightness | Muted |
+| --- | --- | --- |
+| <img src="media/volume.jpg" alt="Centered volume indicator" width="300"> | <img src="media/brightness.jpg" alt="Centered brightness indicator" width="300"> | <img src="media/muted.jpg" alt="Centered muted volume indicator" width="300"> |
 
 ## Features
 
