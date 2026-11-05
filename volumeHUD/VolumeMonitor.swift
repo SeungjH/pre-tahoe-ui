@@ -179,24 +179,6 @@ class VolumeMonitor: ObservableObject, @unchecked Sendable {
         return 16.0
     }
 
-    private func isUserInitiatedVolumeChange(_ delta: Float, rawVolume: Float) -> Bool {
-        let tolerance: Float = 0.001
-        let absDelta = abs(delta)
-        let supportedStepCounts: [Float] = [16.0, 64.0]
-
-        for stepCount in supportedStepCounts {
-            let baseStepSize = 1.0 / stepCount
-            for multiplier in 1 ... 4 {
-                let expectedDelta = baseStepSize * Float(multiplier)
-                if abs(absDelta - expectedDelta) < tolerance, isAlignedToStep(rawVolume, stepCount: stepCount) {
-                    return true
-                }
-            }
-        }
-
-        return false
-    }
-
     private func getCurrentVolumeAndMuteState() -> VolumeSnapshot {
         // Get volume
         var volume: Float = 0.0
@@ -280,7 +262,6 @@ class VolumeMonitor: ObservableObject, @unchecked Sendable {
             let currentTime = Date().timeIntervalSince1970
             let timeSinceVolumeKey = currentTime - lastVolumeKeyTime
             let timeSinceMuteKey = currentTime - lastMuteKeyTime
-            let userVolumeHeuristicMatched = volumeChanged && isUserInitiatedVolumeChange(rawVolumeDelta, rawVolume: snapshot.rawVolume)
             let hasRecentVolumeKeyEvidence = timeSinceVolumeKey < 1.0
             let hasRecentMuteKeyEvidence = timeSinceMuteKey < 1.0
 
@@ -293,11 +274,9 @@ class VolumeMonitor: ObservableObject, @unchecked Sendable {
                     if timeSinceInterceptorChange <= MediaKeyInterceptor.volumeChangeCooldown {
                         shouldShowHUD = false
                         showReason = "Suppressing duplicate HUD because MediaKeyInterceptor already handled this change."
-                    } else if volumeChanged, userVolumeHeuristicMatched || hasRecentVolumeKeyEvidence {
+                    } else if volumeChanged, hasRecentVolumeKeyEvidence {
                         shouldShowHUD = true
-                        showReason = userVolumeHeuristicMatched
-                            ? "Showing HUD because the volume delta matched user key step patterns."
-                            : "Showing HUD because a recent volume key press corroborated the CoreAudio change."
+                        showReason = "Showing HUD because a recent volume key press corroborated the CoreAudio change."
                     } else if muteChanged, hasRecentMuteKeyEvidence {
                         shouldShowHUD = true
                         showReason = "Showing HUD because a recent mute key press corroborated the mute change."
@@ -306,11 +285,9 @@ class VolumeMonitor: ObservableObject, @unchecked Sendable {
                         showReason = "Ignoring non-user volume or mute change with no corroborating key evidence."
                     }
                 } else {
-                    if volumeChanged, userVolumeHeuristicMatched || hasRecentVolumeKeyEvidence {
+                    if volumeChanged, hasRecentVolumeKeyEvidence {
                         shouldShowHUD = true
-                        showReason = userVolumeHeuristicMatched
-                            ? "Showing HUD because the volume delta matched user key step patterns."
-                            : "Showing HUD because a recent volume key press corroborated the CoreAudio change."
+                        showReason = "Showing HUD because a recent volume key press corroborated the CoreAudio change."
                     } else if muteChanged, hasRecentMuteKeyEvidence {
                         shouldShowHUD = true
                         showReason = "Showing HUD because a recent mute key press corroborated the mute change."
@@ -320,12 +297,12 @@ class VolumeMonitor: ObservableObject, @unchecked Sendable {
                     }
                 }
             #else
-                if volumeChanged, userVolumeHeuristicMatched {
+                if volumeChanged, hasRecentVolumeKeyEvidence {
                     shouldShowHUD = true
-                    showReason = "Showing HUD because the volume delta matched user key step patterns."
+                    showReason = "Showing HUD because a recent volume key press corroborated the CoreAudio change."
                 } else {
                     shouldShowHUD = false
-                    showReason = "Ignoring volume or mute change without heuristic evidence in sandbox mode."
+                    showReason = "Ignoring volume or mute change without recent key evidence in sandbox mode."
                 }
             #endif // !SANDBOX
 
